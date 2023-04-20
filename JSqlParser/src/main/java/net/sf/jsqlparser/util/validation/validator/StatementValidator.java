@@ -90,7 +90,10 @@ public class StatementValidator extends AbstractValidator<Statement> implements 
 
     //TMDB TODO
     //在StatementValidator中加入针对CreateTJoinDeputyClassValidator类的访问
-
+    @Override
+    public void visit(CreateTJoinDeputyClass createTJoinDeputyClass) {
+        getValidator(CreateTJoinDeputyClassValidator.class).validate(createTJoinDeputyClass);
+    }
 
     @Override
     public void visit(AlterView alterView) {

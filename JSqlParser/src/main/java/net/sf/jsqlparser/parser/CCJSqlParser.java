@@ -7135,7 +7135,7 @@ BUT NOT for Schema or  Aliases (without quoting)
           break;
         case K_DISTINCT:
           jj_consume_token(K_DISTINCT);
-                               Distinct distinct = new Distinct(); plainSelect.setDistinct(distinct);
+                               Distinct distinct2 = new Distinct(); plainSelect.setDistinct(distinct2);
           if (jj_2_88(2)) {
             jj_consume_token(K_ON);
             jj_consume_token(333);
@@ -34962,12 +34962,12 @@ TODO: VariableExpression should be a standalone class with more operations avail
   private int jj_gc = 0;
 
   /** Constructor with InputStream. */
-  public CCJSqlParser(java.io.InputStream stream) {
-     this(stream, null);
-  }
+//  public CCJSqlParser(Provider stream) {
+//     this(stream, null);
+//  }
   /** Constructor with InputStream and supplied encoding */
-  public CCJSqlParser(java.io.InputStream stream, String encoding) {
-    try { jj_input_stream = new SimpleCharStream(stream, encoding, 1, 1); } catch(java.io.UnsupportedEncodingException e) { throw new RuntimeException(e); }
+  public CCJSqlParser(Provider stream, String encoding) {
+    jj_input_stream = new SimpleCharStream(stream, Integer.parseInt(encoding), 1, 1);
     token_source = new CCJSqlParserTokenManager(jj_input_stream);
     token = new Token();
     jj_ntk = -1;
@@ -34977,12 +34977,12 @@ TODO: VariableExpression should be a standalone class with more operations avail
   }
 
   /** Reinitialise. */
-  public void ReInit(java.io.InputStream stream) {
-     ReInit(stream, null);
-  }
+//  public void ReInit(Provider stream) {
+//     ReInit(stream, null);
+//  }
   /** Reinitialise. */
-  public void ReInit(java.io.InputStream stream, String encoding) {
-    try { jj_input_stream.ReInit(stream, encoding, 1, 1); } catch(java.io.UnsupportedEncodingException e) { throw new RuntimeException(e); }
+  public void ReInit(Provider stream, String encoding) {
+    jj_input_stream.ReInit(stream, Integer.parseInt(encoding), 1, 1);
     token_source.ReInit(jj_input_stream);
     token = new Token();
     jj_ntk = -1;
@@ -34993,7 +34993,7 @@ TODO: VariableExpression should be a standalone class with more operations avail
   }
 
   /** Constructor. */
-  public CCJSqlParser(java.io.Reader stream) {
+  public CCJSqlParser(Provider stream) {
     jj_input_stream = new SimpleCharStream(stream, 1, 1);
     token_source = new CCJSqlParserTokenManager(jj_input_stream);
     token = new Token();
@@ -35004,7 +35004,7 @@ TODO: VariableExpression should be a standalone class with more operations avail
   }
 
   /** Reinitialise. */
-  public void ReInit(java.io.Reader stream) {
+  public void ReInit(Provider stream) {
     jj_input_stream.ReInit(stream, 1, 1);
     token_source.ReInit(jj_input_stream);
     token = new Token();

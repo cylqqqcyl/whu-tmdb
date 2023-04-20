@@ -24,7 +24,7 @@ public interface Node {
   /** This method is called after all the child nodes have been
     added. */
   public void jjtClose();
-
+  public int getId();
   /** This pair of methods are used to inform the node of its
     parent. */
   public void jjtSetParent(Node n);
