@@ -1,0 +1,282 @@
+plugins {
+    id 'java'
+    id 'maven-publish'
+    id "ca.coglinc2.javacc" version "latest.release"
+    id 'jacoco'
+    id "com.github.spotbugs" version "latest.release"
+    id 'pmd'
+    id 'checkstyle'
+    
+    // download the RR tools which have no Maven Repository
+    id "de.undercouch.download" version "latest.release"
+}
+
+group = 'com.github.jsqlparser'
+version = '4.6-SNAPSHOT'
+description = 'JSQLParser library'
+java.sourceCompatibility = JavaVersion.VERSION_1_8
+
+repositories {
+	gradlePluginPortal()
+    mavenLocal()
+    mavenCentral()
+    maven {
+        url = uri('https://repo.maven.apache.org/maven2/')
+    }
+
+    maven {
+      url "https://plugins.gradle.org/m2/"
+    }
+}
+
+dependencies {
+    testImplementation 'commons-io:commons-io:2.11.0'
+
+    // This is needed for the Validation Framework tests
+    testImplementation 'org.hamcrest:hamcrest-library:+'
+
+    testImplementation 'org.mockito:mockito-core:+'
+    testImplementation 'org.assertj:assertj-core:+'
+    testImplementation 'org.apache.commons:commons-lang3:+'
+    testImplementation 'com.h2database:h2:2.+'
+
+    // for JaCoCo Reports
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.+'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.+'
+
+    // https://mvnrepository.com/artifact/org.mockito/mockito-junit-jupiter
+    testImplementation 'org.mockito:mockito-junit-jupiter:4.+'
+    testImplementation 'org.junit.jupiter:junit-jupiter-params:+'
+
+    // enforce latest version of JavaCC
+    implementation 'net.java.dev.javacc:javacc:7.0.12'
+    javacc 'net.java.dev.javacc:javacc:7.0.12'
+}
+
+compileJavacc {
+    arguments = [grammar_encoding: 'UTF-8', static: 'false', java_template_type: 'modern']
+}
+
+java {
+    withSourcesJar()
+    withJavadocJar()
+
+    spotbugs
+    pmd
+}
+
+jacoco {
+    toolVersion = "0.8.7"
+}
+
+test {
+    useJUnitPlatform()
+
+    // set heap size for the test JVM(s)
+    minHeapSize = "128m"
+    maxHeapSize = "1G"
+
+    jvmArgs << [
+            '-Djunit.jupiter.execution.parallel.enabled=true',
+            '-Djunit.jupiter.execution.parallel.config.strategy=dynamic',
+            '-Djunit.jupiter.execution.parallel.mode.default=concurrent'
+    ]
+
+    finalizedBy jacocoTestReport // report is always generated after tests run
+    finalizedBy jacocoTestCoverageVerification
+}
+
+jacocoTestReport {
+    dependsOn test // tests are required to run before generating the report
+    reports {
+        xml.required = false
+        csv.required = false
+        html.outputLocation = layout.buildDirectory.dir('reports/jacoco')
+    }
+}
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            //element = 'CLASS'
+            limit {
+                //@todo: temporarily reduced it 80%, we need to bring that back to 84% accepting the Keywords PR
+                minimum = 0.80
+            }
+            excludes = [
+                    'net.sf.jsqlparser.util.validation.*',
+                    'net.sf.jsqlparser.**.*Adapter',
+                    'net.sf.jsqlparser.parser.JJTCCJSqlParserState',
+                    'net.sf.jsqlparser.parser.TokenMgrError',
+                    'net.sf.jsqlparser.parser.StreamProvider',
+                    'net.sf.jsqlparser.parser.CCJSqlParserTokenManager',
+                    'net.sf.jsqlparser.parser.ParseException',
+                    'net.sf.jsqlparser.parser.SimpleNode',
+                    'net.sf.jsqlparser.parser.SimpleCharStream',
+                    'net.sf.jsqlparser.parser.StringProvider',
+            ]
+        }
+        rule {
+            //element = 'CLASS'
+            limit {
+                counter = 'LINE'
+                value = 'MISSEDCOUNT'
+
+                //@todo: temporarily increased to 7000, we need to bring that down to 5500 after accepting the Keywords PR
+                maximum = 7000
+                }
+            excludes = [
+                    'net.sf.jsqlparser.util.validation.*',
+                    'net.sf.jsqlparser.**.*Adapter',
+                    'net.sf.jsqlparser.parser.JJTCCJSqlParserState',
+                    'net.sf.jsqlparser.parser.TokenMgrError',
+                    'net.sf.jsqlparser.parser.StreamProvider',
+                    'net.sf.jsqlparser.parser.CCJSqlParserTokenManager',
+                    'net.sf.jsqlparser.parser.ParseException',
+                    'net.sf.jsqlparser.parser.SimpleNode',
+                    'net.sf.jsqlparser.parser.SimpleCharStream',
+                    'net.sf.jsqlparser.parser.StringProvider',
+            ]
+        }
+//        rule {
+//            element = 'CLASS'
+//            limit {
+//                counter = 'LINE'
+//                value = 'MISSEDRATIO'
+//                maximum = 0.3
+//            }
+//            excludes = [
+//                    'net.sf.jsqlparser.util.validation.*',
+//                    'net.sf.jsqlparser.**.*Adapter',
+//                    'net.sf.jsqlparser.parser.JJTCCJSqlParserState',
+//                    'net.sf.jsqlparser.parser.TokenMgrError',
+//                    'net.sf.jsqlparser.parser.StreamProvider',
+//                    'net.sf.jsqlparser.parser.CCJSqlParserTokenManager',
+//                    'net.sf.jsqlparser.parser.ParseException',
+//                    'net.sf.jsqlparser.parser.SimpleNode',
+//                    'net.sf.jsqlparser.parser.SimpleCharStream',
+//                    'net.sf.jsqlparser.parser.StringProvider',
+//            ]
+//        }
+    }
+}
+
+spotbugsMain {
+    reports {
+        html {
+            enabled = true
+            destination = file("build/reports/spotbugs/main/spotbugs.html")
+            stylesheet = 'fancy-hist.xsl'
+        }
+    }
+}
+
+spotbugs {
+    // fail only on P1 and without the net.sf.jsqlparser.parser.*
+    excludeFilter = file("config/spotbugs/spotBugsExcludeFilter.xml")
+    
+    // do not run over the test, although we should do that eventually
+     spotbugsTest.enabled = false
+}
+
+pmd {
+    consoleOutput = false
+    toolVersion = "6.46.0"
+    
+    sourceSets = [sourceSets.main]
+    
+    // clear the ruleset in order to use configured rules only
+    ruleSets = []
+    
+    //rulesMinimumPriority = 1
+    
+    ruleSetFiles = files("config/pmd/ruleset.xml")
+    
+    pmdMain {
+        excludes = [
+                "build/generated/*"
+        ]
+    }
+}
+
+checkstyle {
+    toolVersion "9.2"
+    sourceSets = [sourceSets.main, sourceSets.test]
+    configFile =rootProject.file('config/checkstyle/checkstyle.xml')
+}
+
+tasks.withType(Checkstyle) {
+    reports {
+        xml.required = false
+        html.required = true
+    }
+}
+
+task renderRR() {
+    doLast {
+        // these WAR files have been provided as a courtesy by Gunther Rademacher 
+        // and belong to the RR - Railroad Diagram Generator Project
+        // https://github.com/GuntherRademacher/rr
+        //
+        // Hosting at manticore-projects.com is temporary until a better solution is found
+        // Please do not use these files without Gunther's permission
+        download {
+            src 'http://manticore-projects.com/download/convert.war'
+            dest "$buildDir/rr/convert.war"
+            overwrite false
+        }
+        
+        download {
+            src 'http://manticore-projects.com/download/rr.war'
+            dest "$buildDir/rr/rr.war"
+            overwrite false
+        }
+        
+        javaexec { 
+          standardOutput = new FileOutputStream("${buildDir}/rr/JSqlParserCC.ebnf")
+          main="-jar"
+          args = [
+              "$buildDir/rr/convert.war",
+              "$buildDir/generated/jjtree/net/sf/jsqlparser/parser/JSqlParserCC.jj"
+            ]
+        }
+        
+        javaexec {
+          main="-jar"
+          args = [
+              "$buildDir/rr/rr.war",
+              "-noepsilon",
+              "-color:#4D88FF",
+              "-offset:0",
+              "-width:800",
+              //"-png",
+              //"-out:${buildDir}/rr/JSqlParserCC.zip",
+              "-out:${buildDir}/rr/JSqlParserCC.xhtml",
+              "${buildDir}/rr/JSqlParserCC.ebnf"
+            ]
+        } 
+    }
+}
+
+task updateKeywords(type: JavaExec) {
+    group = "Execution"
+    description = "Run the main class with JavaExecTask"
+    classpath = sourceSets.main.runtimeClasspath
+    args = [
+            //project(':JSQLParser').file('src/main/jjtree/net/sf/jsqlparser/parser/JSqlParserCC.jjt').absolutePath
+            file('src/main/jjtree/net/sf/jsqlparser/parser/JSqlParserCC.jjt').absolutePath
+    ]
+    mainClass = 'net.sf.jsqlparser.parser.ParserKeywordsUtils'
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            artifactId 'jsqlparser'
+            from(components.java)
+        }
+    }
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
