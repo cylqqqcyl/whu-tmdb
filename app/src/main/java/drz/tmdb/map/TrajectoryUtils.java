@@ -53,8 +53,8 @@ public class TrajectoryUtils {
         if(trajectory == null || trajectory.size() == 0)
             return;
         int tID = getTrajectoryID();
-        String uID = trajectory.get(0).userId;
-        String tString = serialize(trajectory); // 序列化后的位置信息
+        String uID = "'" + trajectory.get(0).userId + "'";
+        String tString = "'" + serialize(trajectory) + "'"; // 序列化后的位置信息
 
         // 构造SQL语句
         String sql;
