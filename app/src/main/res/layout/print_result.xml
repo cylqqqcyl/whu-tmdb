@@ -6,7 +6,13 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#FFFFFF">
-
+<ScrollView
+    android:id="@+id/verticalScrollView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintBottom_toBottomOf="parent">
     <HorizontalScrollView
         android:id="@+id/horizontalScrollView"
         android:layout_width="match_parent"
@@ -18,4 +24,5 @@
             android:layout_height="wrap_content"/>
 
     </HorizontalScrollView>
+</ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

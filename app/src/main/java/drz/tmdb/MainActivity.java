@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,7 +21,8 @@ import drz.tmdb.map.MapActivity;
 public class MainActivity extends AppCompatActivity {
 
     //查询输入框
-
+    private int lastVisibleItemPosition = 0;// 标记上次滑动位置，初始化默认为0
+    private boolean scrollFlag = false;// 标记是否滑动
     private EditText editText;
 
     private TextView text_view;
@@ -217,5 +219,7 @@ public class MainActivity extends AppCompatActivity {
         exit_dialog0.show();
 
     }
+
+
 
 }
