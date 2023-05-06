@@ -397,6 +397,9 @@ public class MemManager {
             writeAccess.write(Constant.INT_TO_BYTES(item.originid));
             // 存deputyid
             writeAccess.write(Constant.INT_TO_BYTES(item.deputyid));
+            // 存deputyname
+            writeAccess.write(Constant.INT_TO_BYTES(item.deputyname.length()));
+            writeAccess.write(item.deputyname.getBytes());
             // 存deputyrule，String[]类型，先用int存有多少个String，每个String前也需要一个int存该String的长度
             writeAccess.write(Constant.INT_TO_BYTES(item.deputyrule.length));
             for(String str : item.deputyrule){
