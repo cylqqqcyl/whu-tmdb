@@ -120,7 +120,8 @@ public class CreateDeputyClassImpl implements CreateDeputyClass {
 
     public boolean help(SelectResult selectResult, int deputyType, String deputyClass) throws TMDBException {
         int deputyId = createDeputyClass(deputyClass, selectResult, deputyType);
-        insertDeputyTable(selectResult.getClassName(),deputyType,deputyId);
+
+        insertDeputyTable(selectResult.getClassName(),deputyType,deputyId,deputyClass);
         insertTuple(selectResult,deputyId);
         return true;
     }
@@ -192,13 +193,13 @@ public class CreateDeputyClassImpl implements CreateDeputyClass {
     }
 
     //第二步，在deputytable中插入
-    public void insertDeputyTable(String[] className,int deputyType, int deputyId) throws TMDBException {
+    public void insertDeputyTable(String[] className,int deputyType, int deputyId, String deputyname) throws TMDBException {
         HashSet<String> collect = Arrays.stream(className).collect(Collectors.toCollection(HashSet::new));
         for (String s :
                 collect) {
             int oriId=memConnect.getClassId(s);
             memConnect.getDeputyt().deputyTable.add(
-                    new DeputyTableItem(oriId,deputyId,new String[]{deputyType+""})
+                    new DeputyTableItem(oriId,deputyId,deputyname,new String[]{deputyType+""})
             );
         }
     }
