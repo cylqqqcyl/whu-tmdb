@@ -19,7 +19,9 @@ import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
+//import com.amap.api.maps.utils.overlay.SmoothMoveMarker;
 import com.amap.api.maps2d.AMap;
+import com.amap.api.maps2d.AMapException;
 import com.amap.api.maps2d.CameraUpdateFactory;
 import com.amap.api.maps2d.LocationSource;
 import com.amap.api.maps2d.MapView;
@@ -28,11 +30,15 @@ import com.amap.api.maps2d.model.BitmapDescriptorFactory;
 import com.amap.api.maps2d.model.Circle;
 import com.amap.api.maps2d.model.CircleOptions;
 import com.amap.api.maps2d.model.LatLng;
+import com.amap.api.maps2d.model.LatLngBounds;
 import com.amap.api.maps2d.model.Marker;
 import com.amap.api.maps2d.model.MarkerOptions;
+import com.amap.api.maps2d.model.Polyline;
+import com.amap.api.maps2d.model.PolylineOptions;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import android.provider.Settings.Secure;
 
@@ -42,6 +48,7 @@ import drz.tmdb.R;
 public class MapActivity extends Activity implements LocationSource,
         AMapLocationListener {
 
+    private Polyline polyline;
     private AMap aMap;
     private MapView mapView;
     private OnLocationChangedListener mListener;
@@ -127,6 +134,8 @@ public class MapActivity extends Activity implements LocationSource,
         }
         mLocationErrText = (TextView)findViewById(R.id.location_errInfo_text);
         mLocationErrText.setVisibility(View.GONE);
+
+        test_trace();
     }
 
     /**
@@ -216,9 +225,18 @@ public class MapActivity extends Activity implements LocationSource,
                 Date date = new Date(amapLocation.getTime()); // 获取定位时间
                 String userID = Secure.getString(getContentResolver(), Secure.ANDROID_ID); // 获取uid
 
+
+                List<LatLng> trace = new ArrayList<LatLng>();
+                int szT = trajectory.size();
+                if(szT>0) trace.add(new LatLng(trajectory.get(szT-1).latitude,trajectory.get(szT-1).longitude));
                 // 将定位点加入轨迹集合
                 trajectory.add(new TrajectoryPoint(longitude, latitude, date, userID));
-
+                trace.add(new LatLng(trajectory.get(szT).latitude,trajectory.get(szT).longitude));
+                PolylineOptions options = new PolylineOptions().addAll(trace).width(2).color(Color.argb(255, 0, 0, 255));
+                if(szT>0){
+                    polyline = aMap.addPolyline(options);
+                    int a=1;//cut
+                }
             } else {
                 String errText = "定位失败," + amapLocation.getErrorCode()+ ": " + amapLocation.getErrorInfo();
                 Log.e("AmapErr",errText);
@@ -322,6 +340,66 @@ public class MapActivity extends Activity implements LocationSource,
         //创建并显示对话框
         AlertDialog exit_dialog0 = exit_dialog.create();
         exit_dialog0.show();
+    }
+
+    private List<LatLng> readLatLngs(){
+        List<LatLng> trace = new ArrayList<LatLng>();
+
+        double [][] whu_position = {
+                {30.53576927684723,114.36409111149217},{30.53583396296305,114.3639891875496},{30.53583396296338,114.3638443482628},
+                {30.535935612486835,114.36383898384477},{30.536009539346175,114.36376924641038},{30.536111188685922,114.36371560223009},
+                {30.53617587457394,114.36362440712358},{30.536198976666398,114.36353321201707},{30.536198976666398,114.36338837273027},
+                {30.536111188685947,114.36330790645982},{30.536078845725743,114.3631416095009},{30.53612042952972,114.36300749905016},
+                {30.53613429079378,114.36289484627153},{30.536162013315884,114.36276610023882},{30.53616663373543,114.36262126095201},
+                {30.536194356248355,114.36252470142747},{30.536152772476132,114.36243350632097},{30.5360187801999,114.36240668423082},
+                {30.535898649036454,114.36237986214067},{30.53577389728637,114.36233694679643},{30.535792379037247,114.36220283634569},
+                {30.535820101656935,114.36207409031297},{30.535870926439234,114.36186487800981},{30.535898649036554,114.36170394546892},
+                {30.53592175119494,114.3615215552559},{30.535981816781018,114.3612855208626},{30.536037261904365,114.36104948646928},
+                {30.53608346614972,114.36084563858415},{30.536189735830515,114.36065251953508},{30.536277523739976,114.36052377350236},
+                {30.53646234013212,114.36043257839586},{30.536647156172595,114.36020190842058},{30.5367903883621,114.35992295868303},
+                {30.53695672225258,114.35974056847002},{30.537183120701275,114.35949380524065},{30.53749730542921,114.35920949108507},
+                {30.537959339947687,114.35885007507707},{30.53819497670574,114.35872669346239},{30.538347447244725,114.3585121167412},
+                {30.538268901845598,114.35820098049547},{30.538213457996278,114.35786302215959},{30.538153393790385,114.35756261474992},
+                {30.538324345663572,114.35744459755327}
+        };
+
+        for (int i = 0; i < whu_position.length; i++) {
+            trace.add(new LatLng(whu_position[i][0], whu_position[i][1]));
+        }
+        for (int i = whu_position.length-1; i >=0; i--) {
+            trace.add(new LatLng(whu_position[i][0], whu_position[i][1]));
+        }
+
+        PolylineOptions options = new PolylineOptions().addAll(trace).width(5).color(Color.argb(255, 0, 255, 0));
+
+        polyline = aMap.addPolyline(options);
+        return trace;
+    }
+    private void test_trace(){
+        List<LatLng> points = readLatLngs();
+        LatLngBounds bounds = null;
+        try {
+            bounds = new LatLngBounds(points.get(0), points.get(points.size() - 2));
+        } catch (AMapException e) {
+            throw new RuntimeException(e);
+        }
+        aMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 50));
+
+//        SmoothMoveMarker smoothMarker = new SmoothMoveMarker(aMap);
+//        // 设置滑动的图标
+//        smoothMarker.setDescriptor(BitmapDescriptorFactory.fromResource(R.drawable.position));
+//
+//        LatLng drivePoint = points.get(0);
+//        Pair<Integer, LatLng> pair = SpatialRelationUtil.calShortestDistancePoint(points, drivePoint);
+//        points.set(pair.first, drivePoint);
+//        List<LatLng> subList = points.subList(pair.first, points.size());
+//
+//        // 设置滑动的轨迹左边点
+//        smoothMarker.setPoints(subList);
+//        // 设置滑动的总时间
+//        smoothMarker.setTotalDuration(40);
+//        // 开始滑动
+//        smoothMarker.startSmoothMove();
     }
 
 
