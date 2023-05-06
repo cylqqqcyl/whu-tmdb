@@ -4,7 +4,6 @@ package drz.tmdb.Log;
 
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -18,8 +17,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import drz.tmdb.Memory.MemManager;
-import drz.tmdb.Memory.Tuple;
+import drz.tmdb.memory.MemManager;
+import drz.tmdb.memory.Tuple;
 
 public class LogManager {
     public File logFile;//日志文件
@@ -192,7 +191,7 @@ public class LogManager {
         LogItem.offset=currentOffset;
         currentId++;
         writeLogItemToSSTable(LogItem);
-        System.out.println("该条日志已写入，详细信息为：" + LogItem);
+        //System.out.println("该条日志已写入，详细信息为：" + LogItem);
 
         iterator = Map.entrySet().iterator();
         //将该日志记录的logid按对象分类
