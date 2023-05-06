@@ -233,8 +233,8 @@ public class TransAction {
                 //TODO TMDB
                 //加入针对CreateTJoinDeputyClass这种statement的处理逻辑
                 case "CreateTJoinDeputyClass":
-                    CreateDeputyClass createTJoinDeputyClass=new CreateTJoinDeputyClassImpl(memConnect);
-                    if(createTJoinDeputyClass.createDeputyClass(stmt)) {
+                    CreateTJoinDeputyClassImpl createTJoinDeputyClassImpl = new CreateTJoinDeputyClassImpl(memConnect);
+                    if (createTJoinDeputyClassImpl.createTJoinDeputyClass((CreateTJoinDeputyClass) stmt)) {
                         new AlertDialog.Builder(context).setTitle("提示").setMessage("TJoin代理类创建成功").setPositiveButton("确定",null).show();
                     }
                     break;
