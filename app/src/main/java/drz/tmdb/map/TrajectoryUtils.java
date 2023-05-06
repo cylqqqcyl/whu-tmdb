@@ -132,22 +132,22 @@ public class TrajectoryUtils {
             Statement parse6 = CCJSqlParserUtil.parse(sql6);
             SelectResult result6 = select.select(parse6);
             for(Tuple t: result1.getTpl().tuplelist){
-                ret.add(deserialize((String) t.tuple[2]));
+                ret.add(deserialize(((String) t.tuple[2]).replace("'", "")));
             }
             for(Tuple t: result2.getTpl().tuplelist){
-                ret.add(deserialize((String) t.tuple[2]));
+                ret.add(deserialize(((String) t.tuple[2]).replace("'", "")));
             }
             for(Tuple t: result3.getTpl().tuplelist){
-                ret.add(deserialize((String) t.tuple[2]));
+                ret.add(deserialize(((String) t.tuple[2]).replace("'", "")));
             }
             for(Tuple t: result4.getTpl().tuplelist){
-                ret.add(deserialize((String) t.tuple[2]));
+                ret.add(deserialize(((String) t.tuple[2]).replace("'", "")));
             }
             for(Tuple t: result5.getTpl().tuplelist){
-                ret.add(deserialize((String) t.tuple[2]));
+                ret.add(deserialize(((String) t.tuple[2]).replace("'", "")));
             }
             for(Tuple t: result6.getTpl().tuplelist){
-                ret.add(deserialize((String) t.tuple[2]));
+                ret.add(deserialize(((String) t.tuple[2]).replace("'", "")));
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -209,7 +209,7 @@ public class TrajectoryUtils {
         ArrayList<TrajectoryPoint> ret = new ArrayList<>();
         String[] info = str.split("-");
         int pointCount = info.length / 2;
-        for(int i=0; i<pointCount; i++){
+        for(int i=0,ci=0; ci<pointCount; ci++,i+=2){
             ret.add(new TrajectoryPoint(Double.parseDouble(info[i]), Double.parseDouble(info[i+1])));
         }
         return ret;

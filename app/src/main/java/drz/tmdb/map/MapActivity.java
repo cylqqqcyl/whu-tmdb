@@ -110,12 +110,25 @@ public class MapActivity extends Activity implements LocationSource,
         int counter = -1;
         for(ArrayList<TrajectoryPoint> trajectory : trajectories){
             counter = (counter + 1) % 11;
+            List<LatLng> trace = new ArrayList<LatLng>();
             // 绘制每条轨迹
             for(TrajectoryPoint point : trajectory){
                 // 绘制每个点
                 LatLng latLng = new LatLng(point.latitude, point.longitude);
                 aMap.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromResource(colorIcon[counter])));
+                trace.add(latLng);
             }
+            Bitmap newBm = BitmapDescriptorFactory.fromResource(colorIcon[counter]).getBitmap();
+            PolylineOptions options = null;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+                options = new PolylineOptions().addAll(trace).width(8)
+                        .color(newBm.getColor(newBm.getWidth()/2,newBm.getHeight()/2).toArgb());
+            }
+            else{
+                options = new PolylineOptions().addAll(trace).width(8)
+                        .color(Color.argb(255,255-255*counter/11,255*counter/11,255*counter/11));
+            }
+            aMap.addPolyline(options);
         }
     }
 
@@ -401,7 +414,5 @@ public class MapActivity extends Activity implements LocationSource,
 //        // 开始滑动
 //        smoothMarker.startSmoothMove();
     }
-
-
 
 }
