@@ -227,6 +227,9 @@ public class TransAction {
                     }
                     break;
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> d208d39d5ebf92f87e1824441cce517434244825
                 //TODO TMDB
                 //加入针对CreateTJoinDeputyClass这种statement的处理逻辑
                 case "CreateTJoinDeputyClass":
@@ -236,8 +239,12 @@ public class TransAction {
                     }
                     break;
 
+<<<<<<< HEAD
 =======
 >>>>>>> 887f2adb557df7c16f37d719a0ab6404cd0a4770
+=======
+
+>>>>>>> d208d39d5ebf92f87e1824441cce517434244825
 //                case "Create":
 ////                    log.WriteLog(s);
 ////                    CreateUnionDeputy(aa);
