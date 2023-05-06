@@ -37,10 +37,10 @@ public class ShowDep extends AppCompatActivity implements Serializable {
     }
 
     private void showDepTab(DeputyTable deputyt) {
-        int tabCol = 3;
+        int tabCol = 4;
         int tabH = deputyt.deputyTable.size();
         Object oj1,oj2;
-        String stemp1, stemp2, stemp3;
+        String stemp1, stemp2, stemp3, stemp4;
         String[] satemp;
 
         show_tab = findViewById(R.id.rst_tab);
@@ -51,7 +51,7 @@ public class ShowDep extends AppCompatActivity implements Serializable {
                 stemp1 = "originid";
                 stemp2 = "deputyid";
                 stemp3 = "deputyrule";
-
+                stemp4 = "deputyname";
             } else {
                 oj1 = deputyt.deputyTable.get(i-1).originid;
                 oj2 = deputyt.deputyTable.get(i-1).deputyid;
@@ -59,6 +59,7 @@ public class ShowDep extends AppCompatActivity implements Serializable {
                 stemp1 = oj1.toString();
                 stemp2 = oj2.toString();
                 stemp3 = satemp[0].toString();
+                stemp4 = deputyt.deputyTable.get(i-1).deputyname;
             }
             for (int j = 0; j < tabCol; j++) {
                 TextView tv = new TextView(this);
@@ -72,7 +73,9 @@ public class ShowDep extends AppCompatActivity implements Serializable {
                     case 2:
                         tv.setText(stemp3);
                         break;
-
+                    case 3:
+                        tv.setText(stemp4);
+                        break;
                 }
                 tv.setGravity(Gravity.CENTER);
                 tv.setBackgroundResource(R.drawable.tab_bg);

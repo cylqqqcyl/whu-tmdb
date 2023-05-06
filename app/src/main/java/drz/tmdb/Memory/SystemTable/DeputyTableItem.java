@@ -5,10 +5,11 @@ import java.util.Arrays;
 import java.util.Objects;
 
 public class DeputyTableItem implements Serializable {
-    public DeputyTableItem(int originid, int deputyid, String[] deputyrule) {
+    public DeputyTableItem(int originid, int deputyid, String deputyname,String[] deputyrule) {
         this.originid = originid;
         this.deputyid = deputyid;
         this.deputyrule = deputyrule;
+        this.deputyname = deputyname;
     }
 
     public DeputyTableItem() {
@@ -16,7 +17,9 @@ public class DeputyTableItem implements Serializable {
 
     public int originid = 0;            //类id
     public int deputyid = 0;           //代理类id
+    public String deputyname = "";
     public String[] deputyrule = new String[0];    //代理guizedui
+
 
     @Override
     public boolean equals(Object object){
@@ -35,13 +38,13 @@ public class DeputyTableItem implements Serializable {
             return false;
         }
 
-        return true;
+        return Objects.equals(this.deputyname, oi.deputyname);
     }
 
     @Override
     public int hashCode() {
         int result = 17;
-        result = 31 * result + Objects.hash(this.originid)+Objects.hash(Arrays.stream(this.deputyrule).toArray())+Objects.hash(this.deputyid);
+        result = 31 * result + Objects.hash(this.originid)+Objects.hash(Arrays.stream(this.deputyrule).toArray())+Objects.hash(this.deputyid)+Objects.hash(this.deputyname);
         return result;
     }
 }
