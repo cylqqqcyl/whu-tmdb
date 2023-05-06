@@ -10,6 +10,7 @@ import android.os.Bundle;
 import net.sf.jsqlparser.JSQLParserException;
 import net.sf.jsqlparser.parser.CCJSqlParserUtil;
 import net.sf.jsqlparser.statement.Statement;
+import net.sf.jsqlparser.statement.create.deputyclass.CreateTJoinDeputyClass;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -32,6 +33,7 @@ import drz.tmdb.Transaction.Transactions.Insert;
 import drz.tmdb.Transaction.Transactions.Update;
 import drz.tmdb.Transaction.Transactions.impl.CreateImpl;
 import drz.tmdb.Transaction.Transactions.impl.CreateDeputyClassImpl;
+import drz.tmdb.Transaction.Transactions.impl.CreateTJoinDeputyClassImpl;
 import drz.tmdb.Transaction.Transactions.impl.DeleteImpl;
 import drz.tmdb.Transaction.Transactions.impl.DropImpl;
 import drz.tmdb.Transaction.Transactions.impl.InsertImpl;
@@ -224,9 +226,20 @@ public class TransAction {
                         new AlertDialog.Builder(context).setTitle("提示").setMessage("创建成功").setPositiveButton("确定",null).show();
                     }
                     break;
+                //TODO TMDB
+                //加入针对CreateTJoinDeputyClass这种statement的处理逻辑
+                case "CreateTJoinDeputyClass":
+                    CreateDeputyClass createTJoinDeputyClass=new CreateTJoinDeputyClassImpl(memConnect);
+                    if(createTJoinDeputyClass.createDeputyClass(stmt)) {
+                        new AlertDialog.Builder(context).setTitle("提示").setMessage("TJoin代理类创建成功").setPositiveButton("确定",null).show();
+                    }
+                    break;
+
+
 //                case "Create":
-//                    log.WriteLog(s);
-//                    CreateUnionDeputy(aa);
+////                    log.WriteLog(s);
+////                    CreateUnionDeputy(aa);
+//                    new CreateTJoinDeputyClass();
 //                    new AlertDialog.Builder(context).setTitle("提示").setMessage("创建Union代理类成功").setPositiveButton("确定",null).show();
 //                    break;
                 case "Drop":
