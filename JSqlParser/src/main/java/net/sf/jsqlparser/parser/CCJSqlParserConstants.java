@@ -926,7 +926,7 @@ public interface CCJSqlParserConstants {
     "\"SCHEMA\"",
     "<K_SELECT>",
     "<K_DEPUTYCLASS>",
-    "<K_TJOINDEPUTYCLASS>",
+    "\"TJOINDEPUTY\"",
     "\"SEMI\"",
     "\"SEQUENCE\"",
     "\"SEPARATOR\"",
