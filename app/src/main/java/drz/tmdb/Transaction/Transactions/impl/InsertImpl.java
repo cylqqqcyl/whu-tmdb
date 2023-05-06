@@ -128,45 +128,52 @@ public class InsertImpl implements Insert {
         //现在由于多了基于轨迹相似度的代理类，因此，需要进行额外的逻辑处理
 
         //首先调用tJoinDeputySize方法得到是否当前类是否存在基于轨迹相似度的代理类，并得到代理类的id list
-
+        List<Integer> trajDeputyClassIds = tJoinDeputySize(classId);
         //如果list非空就需要进一步判断
-
+        if (!trajDeputyClassIds.isEmpty()) {
             //调用TrajTrans.getTraj方法将当前元祖的轨迹部分转化为List<Coordinate> traj1进行后续操作
 
+            List<Coordinate> traj1 = TrajTrans.getTraj(tuple.tuple[1].toString());
             //对代理类idlist进行遍历
-
+            for (int deputyId : trajDeputyClassIds) {
                 //得到当前代理类的id
-
-                //由于基于轨迹相似度的代理类需要两个源类，需要拿到另一个源类，这里使用getAnotherDeputy方法拿到
-
+                //由于基于轨迹相似度的代理类需要两个源类，需要拿到另一个源类，这里使用getAnotherDeputy方法拿到另一个源类的id
+                int anotherClassId = getAnotherDeputy(deputyId, classId);
                 //通过select的getTable（classid）方法拿到另一个源类的所有tuple
-
+                TupleList otherClassTuples = select.getTable(anotherClassId);
                 //遍历另一个源类的所有tuple
-
+                for (Tuple otherTuple : otherClassTuples.tuplelist) {
                     //拿到另一个源类的当前tuple
-
                     //通过TrajTrans.getTraj方法将当前元祖的轨迹部分转化为List<Coordinate> traj2进行后续操作
-
+                    List<Coordinate> traj2 = TrajTrans.getTraj(otherTuple.tuple[1].toString());
                     //通过longestCommonSubSequence.getCommonSubsequence获取当前两个traj的公共子序列
+                    List<Coordinate> commonSubsequence = longestCommonSubSequence.getCommonSubsequence(traj1, traj2, 3);
 
-                    //如果子序列长度大于阈值，则需要在代理类中插入新的tuple
-
+                    if (commonSubsequence.size() >= 3) {
                         //新建临时tuple，这个tuple就是要往代理类中进行插入的tuple
                         //临时tuple除了轨迹部分存的和当前进行插入的tuple（方法形参里的不同，其它都相同）步骤和TJoinSelect一样
-
-
-
-
+                        Tuple temp1 = new Tuple();
                         //需要将得到的轨迹子序列，转换成string的形式，然后将tuple中轨迹部分设置为转换后的值
+                        List<Coordinate> traj = TrajTrans.getTraj(commonSubsequence.toString());
+                        temp1.tuple = tuple.tuple;
+                        temp1.tupleHeader = tuple.tupleHeader;
+                        temp1.tupleId = tuple.tupleId;
+                        temp1.tupleIds = tuple.tupleIds;
+                        int i1 = executeTuple(deputyId, columns, temp1);
+                        memConnect.getBiPointerT().biPointerTable.add(
+                                new BiPointerTableItem(classId, tupleid, deputyId, i1)
+                        );
+                    }
+                }
+            }
+        }
+
 
 
                         //调用一下方法在代理类中也插入新tuple
 //                        int i1 = executeTuple(deputyId, columns, temp1);
 //                        memConnect.getBiPointerT().biPointerTable.add(
 //                                new BiPointerTableItem(classId, tupleid, deputyId, i1)
-
-
-
 
 
         return tupleid;
