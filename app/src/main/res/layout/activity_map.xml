@@ -31,6 +31,21 @@
                 android:background="@android:drawable/ic_delete"
                 android:text=""
                 tools:ignore="SpeakableTextPresentCheck" />
+
+        </RelativeLayout>
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/join"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:background="@color/blue"
+                android:text="join路径" />
+
         </RelativeLayout>
 
 
