@@ -156,7 +156,7 @@ public class MapActivity extends Activity implements LocationSource,
         mLocationErrText = (TextView)findViewById(R.id.location_errInfo_text);
         mLocationErrText.setVisibility(View.GONE);
 
-        test_trace();
+//        test_trace();
     }
 
     /**
