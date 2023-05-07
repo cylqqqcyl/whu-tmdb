@@ -49,9 +49,7 @@
             android:resource="@xml/echart" />
         <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="1ca3f6fd6fc5680f6930cc6ba665ebde"/>
-<!--        fc0bfcfcf15fbf03df259adf1158e7f9-->
-
+            android:value="475a6476c49e0d9a517ae6648a663bde"/>
 
         <service
             android:name="com.amap.api.location.APSService">
@@ -112,5 +110,4 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
     </application>
-
 </manifest>

@@ -109,7 +109,8 @@ public class InsertImpl implements Insert {
         tuple.tupleIds=ids;
         tuple.tupleId=tupleid;
         memConnect.InsertTuple(tuple);
-        memConnect.getTopt().objectTable.add(new ObjectTableItem(classId,tupleid));
+        String classname=memConnect.getClassName(tuple.classId);
+        memConnect.getTopt().objectTable.add(new ObjectTableItem(classId,tupleid,classname));
         ArrayList<Integer> pointTo = deputySize(classId);
         ArrayList<HashMap<Integer, Integer>> deputyAttr = getDeputyAttr(pointTo.size(), classId);
         for (int i = 0; i < pointTo.size(); i++) {
@@ -373,7 +374,8 @@ public class InsertImpl implements Insert {
         Arrays.fill(ids,tupleid);
         tuple.tupleId=tupleid;
         memConnect.InsertTuple(tuple);
-        memConnect.getTopt().objectTable.add(new ObjectTableItem(classId,tupleid));
+        String classname=memConnect.getClassName(tuple.classId);
+        memConnect.getTopt().objectTable.add(new ObjectTableItem(classId,tupleid,classname));
         if(hasDeputy){
 
         }

@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> d208d39d5ebf92f87e1824441cce517434244825
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="deploymentTargetDropDown">
@@ -12,57 +7,11 @@
         <deviceKey>
           <Key>
             <type value="SERIAL_NUMBER" />
-            <value value="FEC0220429012363" />
+            <value value="fef05dfa" />
           </Key>
         </deviceKey>
       </Target>
     </runningDeviceTargetSelectedWithDropDown>
-    <timeTargetWasSelectedWithDropDown value="2023-05-06T03:29:49.008360400Z" />
+    <timeTargetWasSelectedWithDropDown value="2023-05-07T04:45:42.493281900Z" />
   </component>
-<<<<<<< HEAD
-=======
-<<<<<<< Updated upstream
-<?xml version="1.0" encoding="UTF-8"?>
-<project version="4">
-  <component name="deploymentTargetDropDown">
-    <runningDeviceTargetSelectedWithDropDown>
-      <Target>
-        <type value="RUNNING_DEVICE_TARGET" />
-        <deviceKey>
-          <Key>
-            <type value="SERIAL_NUMBER" />
-            <value value="FEC0220429012363" />
-          </Key>
-        </deviceKey>
-      </Target>
-    </runningDeviceTargetSelectedWithDropDown>
-    <timeTargetWasSelectedWithDropDown value="2023-05-06T03:29:49.008360400Z" />
-  </component>
->>>>>>> 60a1482dbd51feb08659dac1f546002df680c757
-=======
-<?xml version="1.0" encoding="UTF-8"?>
-<project version="4">
-  <component name="deploymentTargetDropDown">
-    <runningDeviceTargetSelectedWithDropDown>
-      <Target>
-        <type value="RUNNING_DEVICE_TARGET" />
-        <deviceKey>
-          <Key>
-            <type value="SERIAL_NUMBER" />
-            <value value="GMG0220616007011" />
-          </Key>
-        </deviceKey>
-      </Target>
-    </runningDeviceTargetSelectedWithDropDown>
-<<<<<<< HEAD
-    <timeTargetWasSelectedWithDropDown value="2023-05-06T01:29:50.401407400Z" />
-  </component>
->>>>>>> 887f2adb557df7c16f37d719a0ab6404cd0a4770
-=======
->>>>>>> d208d39d5ebf92f87e1824441cce517434244825
-=======
-    <timeTargetWasSelectedWithDropDown value="2023-05-06T05:43:08.719019Z" />
-  </component>
->>>>>>> Stashed changes
->>>>>>> 60a1482dbd51feb08659dac1f546002df680c757
 </project>
