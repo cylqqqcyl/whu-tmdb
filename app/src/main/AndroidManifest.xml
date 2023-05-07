@@ -52,7 +52,6 @@
             android:value="1ca3f6fd6fc5680f6930cc6ba665ebde"/>
 <!--        fc0bfcfcf15fbf03df259adf1158e7f9-->
 
-
         <service
             android:name="com.amap.api.location.APSService">
         </service>
@@ -112,5 +111,4 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
     </application>
-
 </manifest>
