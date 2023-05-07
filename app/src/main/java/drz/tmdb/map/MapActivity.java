@@ -90,10 +90,18 @@ public class MapActivity extends Activity implements LocationSource,
 
         // 退出地图按钮
         Button clean_button = findViewById(R.id.back_button);
+        //join轨迹
+        Button join_button=findViewById(R.id.join);
         clean_button.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
                 showExitDialog(v);
+            }
+        });
+        join_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
             }
         });
     }
