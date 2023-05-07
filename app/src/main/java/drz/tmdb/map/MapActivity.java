@@ -101,7 +101,7 @@ public class MapActivity extends Activity implements LocationSource,
         join_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                markTjoin();
             }
         });
     }
@@ -421,6 +421,22 @@ public class MapActivity extends Activity implements LocationSource,
 //        smoothMarker.setTotalDuration(40);
 //        // 开始滑动
 //        smoothMarker.startSmoothMove();
+    }
+
+    void markTjoin(){
+        ArrayList<ArrayList<TrajectoryPoint>> trajectories = TrajectoryUtils.loadTJ();
+        if(trajectories == null || trajectories.size() == 0)
+            return;
+        Bitmap bMap = BitmapFactory.decodeResource(this.getResources(),
+                R.drawable.star);
+        BitmapDescriptor des = BitmapDescriptorFactory.fromBitmap(bMap);
+        for(ArrayList<TrajectoryPoint> trajectory : trajectories){
+            for(TrajectoryPoint point : trajectory){
+                // 绘制每个点
+                LatLng latLng = new LatLng(point.latitude, point.longitude);
+                aMap.addMarker(new MarkerOptions().position(latLng).icon(des));
+            }
+        }
     }
 
 }
