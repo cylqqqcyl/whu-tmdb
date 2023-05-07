@@ -155,6 +155,21 @@ public class TrajectoryUtils {
         return ret;
     }
 
+    public static ArrayList<ArrayList<TrajectoryPoint>> loadTJ(){
+        ArrayList<ArrayList<TrajectoryPoint>> ret = new ArrayList<ArrayList<TrajectoryPoint>>();
+        String sql_tj = "SELECT * FROM tj;";
+        try{
+            Select select = new SelectImpl(memConnect);
+            Statement parse1 = CCJSqlParserUtil.parse(sql_tj);
+            SelectResult result1 = select.select(parse1);
+            for(Tuple t: result1.getTpl().tuplelist){
+                ret.add(deserialize((String) t.tuple[2]));
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return ret;
+    }
 
     // 获取TrajectoryID
     public static int getTrajectoryID(){
