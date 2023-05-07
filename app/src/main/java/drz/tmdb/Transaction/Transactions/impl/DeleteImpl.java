@@ -83,7 +83,8 @@ public class DeleteImpl implements Delete {
         ArrayList<Integer> delete=new ArrayList<>();
         for(Tuple tuple:tupleList.tuplelist){
             memConnect.DeleteTuple(tuple.getTupleId());
-            ObjectTableItem o=new ObjectTableItem(tuple.classId,tuple.getTupleId());
+            String classname=memConnect.getClassName(tuple.classId);
+            ObjectTableItem o=new ObjectTableItem(tuple.classId,tuple.getTupleId(),classname);
 //            ArrayList<Object> list=memConnect.getTopt().objectTable;
             memConnect.getTopt().objectTable.remove(o);
             delete.add(tuple.getTupleId());

@@ -138,6 +138,19 @@ public class MemConnect {
         }
         return -1;
     }
+
+    public String getClassName(int classid){
+        try {
+            for (ClassTableItem item : classt.classTable) {
+                if (item.classid == classid) {
+                    return item.classname;
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return "NULL";
+    }
 //
 //    //输入需要获取的表名，得到对应的元祖值
 //    public TupleList getTable(FromItem fromItem) throws TMDBException {
