@@ -45,13 +45,13 @@ public class LevelManager {
     public final TreeSet[] levels = {level_0, level_1, level_2, level_3, level_4, level_5, level_6};
 
 
-    public CacheManager cacheManager;
+    public CacheManager cacheManager = new CacheManager();
 
     // constructor
     public LevelManager(){
         // 每次初始化时加载总索引表
         try{
-            File dir = new File(Constant.DATABASE_DIR);
+            File dir = new File(DATABASE_DIR);
             if(!dir.exists()){
                 dir.mkdirs();
             }
@@ -72,6 +72,7 @@ public class LevelManager {
                 input.read(buff, 0, lengthToRead);
                 this.levelInfo = (Map<String, String>) JSON.parse(new String(buff));
             }
+
         }catch(FileNotFoundException e){
             e.printStackTrace();
         }catch(IOException e) {
