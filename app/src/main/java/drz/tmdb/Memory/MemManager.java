@@ -70,7 +70,8 @@ public class MemManager {
         loadBiPointerTable();
         loadObjectTable();
 
-        levelManager.cacheManager = this.cacheManager;
+//        levelManager.cacheManager = this.cacheManager;
+        this.cacheManager = levelManager.cacheManager;
 //        // 将level-0和level-1和level-2的SSTable的meta block存进缓存中
 //        for(Integer fileSuffix : this.levelManager.level_0){
 //            this.cacheManager.metaCache.add(new SSTable("SSTable" + fileSuffix, 3));
@@ -200,7 +201,7 @@ public class MemManager {
                     Integer suffix = arrayList.get(j);
                     // i ：level
                     // j : fileSuffix
-                    SSTable sst;
+                    SSTable sst = new SSTable("SSTable" + suffix, i);
                     if(i <=2)
                         // level 0-2 直接从缓存中获取meta block
                         sst = this.cacheManager.metaCache.get(suffix);

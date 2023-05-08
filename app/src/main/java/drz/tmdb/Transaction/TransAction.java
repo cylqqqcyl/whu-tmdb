@@ -58,7 +58,7 @@ public class TransAction {
     public TransAction() throws IOException {}
 
     public TransAction(Context context) throws IOException {
-        test23();
+//        test23();
         this.context = context;
         this.mem = new MemManager();
         this.levelManager = mem.levelManager;
