@@ -9,13 +9,13 @@ import java.util.List;
 public class LongestCommonSubSequence {
     static Comparator<Coordinate> comparator = (p1, p2) -> {
         double dist = Geo.distance(p1, p2);
-        if (dist <= 50) return 0;
+        if (dist <= 10) return 0;
         return 1;
     };
     public List<Coordinate> getCommonSubsequence(List<Coordinate> firstTrajectory, List<Coordinate> secondTrajectory, int theta) {
         int m = firstTrajectory.size();
         int n = secondTrajectory.size();
-        int[][] dp = new int[firstTrajectory.size() + 1][secondTrajectory.size() + 1];
+        int[][] dp = new int[m + 1][n + 1];
 
         // Calculate the LCSS matrix
         for (int i = 1; i <= firstTrajectory.size(); i++) {
@@ -30,8 +30,25 @@ public class LongestCommonSubSequence {
             }
         }
         List<Coordinate> result = new ArrayList<>();
-        int i = m, j = n;
-        int c=dp[m][n];
+        int maxLength = 0;
+        int maxI = 0, maxJ = 0;
+        for (int i = 0; i <= m; i++) {
+            if (dp[i][n] > maxLength) {
+                maxLength = dp[i][n];
+                maxI = i;
+                maxJ = n;
+            }
+        }
+        for (int j = 0; j <= n; j++) {
+            if (dp[m][j] > maxLength) {
+                maxLength = dp[m][j];
+                maxI = m;
+                maxJ = j;
+            }
+        }
+        int i = maxI;
+        int j = maxJ;
+        int c = maxLength;
 //        System.out.println(comparator.compare(firstTrajectory.get(10),secondTrajectory.get(9))==0);
         while (i > 0 && j > 0 && c >0 ) {
             if (comparator.compare(firstTrajectory.get(i - 1),secondTrajectory.get(j - 1))==0) {
