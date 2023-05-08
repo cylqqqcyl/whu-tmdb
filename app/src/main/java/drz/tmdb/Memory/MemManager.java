@@ -398,15 +398,15 @@ public class MemManager {
             writeAccess.write(Constant.INT_TO_BYTES(item.originid));
             // 存deputyid
             writeAccess.write(Constant.INT_TO_BYTES(item.deputyid));
-            // 存deputyname
-            writeAccess.write(Constant.INT_TO_BYTES(item.deputyname.length()));
-            writeAccess.write(item.deputyname.getBytes());
             // 存deputyrule，String[]类型，先用int存有多少个String，每个String前也需要一个int存该String的长度
             writeAccess.write(Constant.INT_TO_BYTES(item.deputyrule.length));
             for(String str : item.deputyrule){
                 writeAccess.write(Constant.INT_TO_BYTES(str.length()));
                 writeAccess.write(str.getBytes());
             }
+            // 存deputyname
+            writeAccess.write(Constant.INT_TO_BYTES(item.deputyname.length()));
+            writeAccess.write(item.deputyname.getBytes());
         }
         writeAccess.flush();
         writeAccess.close();
@@ -439,6 +439,13 @@ public class MemManager {
                 cur += strLength;
                 item.deputyrule[i] = new String(buffer);
             }
+            // 读deputyname
+            int strLength = raf.readInt();
+            cur += Integer.BYTES;
+            byte[] buffer = new byte[strLength];
+            raf.read(buffer);
+            cur += strLength;
+            item.deputyname = new String(buffer);
             this.deputyTable.deputyTable.add(item);
         }
     }
@@ -459,12 +466,18 @@ public class MemManager {
             // 存oriattrid
             writeAccess.write(Constant.INT_TO_BYTES(item.oriAttrid));
 //            writeAccess.write(item.deputy.getBytes());
+            // 存oriattr
+            writeAccess.write(Constant.INT_TO_BYTES(item.oriAttr.length()));
+            writeAccess.write(item.oriAttr.getBytes());
             // 存deputyclassid
             writeAccess.write(Constant.INT_TO_BYTES(item.deputyId));
 //            writeAccess.write(item.attr.getBytes());
             // 存deputyattrid
             writeAccess.write(Constant.INT_TO_BYTES(item.deputyAttrId));
 //            writeAccess.write(item.deputy.getBytes());
+            // 存deputyattr
+            writeAccess.write(Constant.INT_TO_BYTES(item.deputyAttr.length()));
+            writeAccess.write(item.deputyAttr.getBytes());
             // 存rule
             writeAccess.write(Constant.INT_TO_BYTES(item.rule.length()));
             writeAccess.write(item.rule.getBytes());
@@ -498,13 +511,25 @@ public class MemManager {
             cur+=Integer.BYTES;
             item.oriAttrid=raf.readInt();
             cur+=Integer.BYTES;
+
+            int len = raf.readInt();
+            byte[] buffer = new byte[len];
+            raf.read(buffer);
+            item.oriAttr = new String(buffer);
+            cur += (Integer.BYTES + len);
+
             item.deputyId=raf.readInt();
             cur+=Integer.BYTES;
             item.deputyAttrId=raf.readInt();
             cur+=Integer.BYTES;
+
+            len = raf.readInt();
+            buffer = new byte[len];
+            raf.read(buffer);
+            item.deputyAttr = new String(buffer);
+            cur += (Integer.BYTES + len);
+
             // 读rule
-            int len = raf.readInt();
-            byte[] buffer = new byte[len];
             len = raf.readInt();
             buffer = new byte[len];
             raf.read(buffer);
@@ -535,6 +560,10 @@ public class MemManager {
             raf.writeInt(item.classid);
             // 存tupleid
             raf.writeInt(item.tupleid);
+            // 存classnamelen
+            raf.writeInt(item.classname.length());
+            // 存classname
+            raf.write(item.classname.getBytes());
             // 存sstSuffix
             raf.writeInt(item.sstSuffix);
         }
@@ -561,6 +590,14 @@ public class MemManager {
             // 读tupleid
             item.tupleid = raf.readInt();
             cur += Integer.BYTES;
+            // 读classnamelen
+            int strLength = raf.readInt();
+            cur += Integer.BYTES;
+            // 读classname
+            byte[] buffer = new byte[strLength];
+            raf.read(buffer);
+            cur += strLength;
+            item.classname = new String(buffer);
             // 读sstSuffix
             item.sstSuffix = raf.readInt();
             cur += Integer.BYTES;
